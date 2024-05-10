@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Processing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            overflow: hidden; /* 添加溢出隐藏以确保图片不会突破容器边界 */
+        }
+        .image-container {
+            display: flex; /* 使用弹性盒子布局 */
+            justify-content: center; /* 水平居中 */
+            margin-bottom: 20px; /* 底部间距 */
+        }
+        img {
+            max-width: 45%; /* 图片最大宽度为容器宽度的一半 */
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 10px; /* 图片间距 */
+        }
+        .upload-btn, .process-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .upload-btn:hover, .process-btn:hover {
+            background-color: #0056b3;
+        }
+        .select-box {
+            margin-top: 20px;
+        }
+        .select-box label {
+            margin-right: 10px;
+        }
+        .select-box select {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .static-link {
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 16px;
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+        .static-link:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Privacy Processing</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" style="display: none;" id="fileInput" onchange="displaySelectedFileName(this)">
+            <label for="fileInput" class="upload-btn">Choose Image</label>
+            <span id="fileName" style="margin-left: 10px;"></span>
+            <button type="submit" class="process-btn">Process</button>
+            <div class="select-box">
+                <label for="privacy">Privacy Preference:</label>
+                <select id="privacy" name="privacy">
+                    <option value="roi">Selective Region Processing</option>
+                    <option value="all">Dual Processing for Scene and Region Selection</option>
+                </select>
+            </div>
+        </form>
+         <a href="/download" class="static-link">Data Download</a>
+        {% if original and processed %}
+        <div class="image-container">
+            <div>
+                <h2>Original Image</h2>
+                <img src="{{ original }}" alt="Original Image">
+            </div>
+            <div>
+                <h2>Processed Image</h2>
+                <img src="{{ processed }}" alt="Processed Image">
+            </div>
+        </div>
+        {% endif %}
+        {% if error %}
+        <p>{{ error }}</p>
+        {% endif %}
+
+    </div>
+    <script>
+        function displaySelectedFileName(input) {
+            var fileNameSpan = document.getElementById('fileName');
+            fileNameSpan.textContent = input.files[0].name;
+        }
+    </script>
+</body>
+</html>
